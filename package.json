@@ -1,0 +1,21 @@
+{
+  "name": "accounting",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "jest",
+    "start": "node app.js"
+  },
+  "author": "Ayan Chakraborty",
+  "license": "MIT",
+  "dependencies": {
+    "@types/json-query": "^2.2.0",
+    "chalk": "^4.0.0",
+    "columnify": "^1.5.4",
+    "jest": "^26.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^13.13.2"
+  }
+}

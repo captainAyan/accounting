@@ -1,0 +1,80 @@
+{
+  "entries": [
+    {
+      "id": 1,
+      "debit": 3,
+      "credit": 4,
+      "amount": 100,
+      "time": 1587277711331,
+      "narration": "being goods sold for cash"
+    },
+    {
+      "id": 2,
+      "debit": 7,
+      "credit": 3,
+      "amount": 100,
+      "time": 1587585817998,
+      "narration": "being furniture purchased for cash"
+    },
+    {
+      "id": 3,
+      "debit": 7,
+      "credit": 3,
+      "amount": 100,
+      "time": 1587589431972,
+      "narration": "being furniture purchased for cash"
+    },
+    {
+      "id": 4,
+      "debit": 7,
+      "credit": 3,
+      "amount": 100,
+      "time": 1587589479343,
+      "narration": "being furniture purchased for cash"
+    }
+  ],
+  "ledgers": [
+    {
+      "id": 1,
+      "name": "capital",
+      "type": "l",
+      "time": 1587245564633
+    },
+    {
+      "id": 2,
+      "name": "purchases",
+      "type": "e",
+      "time": 1587245564636
+    },
+    {
+      "id": 3,
+      "name": "cash",
+      "type": "a",
+      "time": 1587245564636
+    },
+    {
+      "id": 4,
+      "name": "sales",
+      "type": "i",
+      "time": 1587245564637
+    },
+    {
+      "id": 5,
+      "name": "debtor",
+      "type": "a",
+      "time": 1587277528074
+    },
+    {
+      "id": 6,
+      "name": "machinery",
+      "type": "a",
+      "time": 1587460868112
+    },
+    {
+      "id": 7,
+      "name": "furniture",
+      "type": "a",
+      "time": 1587581039152
+    }
+  ]
+}
