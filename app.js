@@ -1,8 +1,5 @@
-const Database = require("./util/database").Database;
-const Accounting = require("./util/accounting").Accounting;
-
-// const chalk = require('chalk');
-// const columnify = require('columnify');
+const Database = require("./dist/database").Database;
+const Accounting = require("./dist/accounting").Accounting;
 
 const FILENAME = "./acc.json";
 

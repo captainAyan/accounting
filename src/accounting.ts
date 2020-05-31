@@ -13,14 +13,14 @@ export namespace Accounting {
      * @returns Entry object array
      */
     static getEntriesByLedger(ledger:Ledger, db:Database):Accounting.Entry[] {
-      var data = db.query("entries[*debit="+ledger.id+"|credit="+ledger.id+"]");
-      var entries:Accounting.Entry[] = [];
+      let data:any = db.query("entries[*debit="+ledger.id+"|credit="+ledger.id+"]");
+      let entries:Accounting.Entry[] = [];
 
       if(data != []) {
         data.map((d:any) => {
           let entry:Entry|null = Accounting.Entry.Helper.findEntryById(d.id, db);
-          if(entry!=null) entries.push(entry)
-        })
+          if(entry!=null) entries.push(entry);
+        });
       }
       return entries;
     }
@@ -37,7 +37,7 @@ export namespace Accounting {
     static entryTimeFilter(entries:Accounting.Entry[], from_date:number, to_date:number):Accounting.Entry[] {
       if(from_date>=to_date) throw "invalid date arguments, 'to_date' should be bigger than 'from_date'";
       else {
-        var res:Accounting.Entry[] = entries.filter(d => {
+        let res:Accounting.Entry[] = entries.filter(d => {
           return (d.time >= from_date && d.time <= to_date);
         });
         return res;
@@ -117,15 +117,15 @@ export namespace Accounting {
        */
       public save(db: Database):Entry {
 
-        var time:number = new Date().getTime();
+        let time:number = new Date().getTime();
 
         let debit:Ledger|null = Ledger.Helper.findLedgerByName(this.debit, db);
         let credit:Ledger|null = Ledger.Helper.findLedgerByName(this.credit, db);
 
         if(debit!= null && credit != null ) {
-          var id:number = db.data.entries.length+1;
+          let id:number = db.data.entries.length+1;
 
-          var object = {
+          let object = {
             id: id,
             debit: debit.id,
             credit: credit.id,
@@ -155,8 +155,8 @@ export namespace Accounting {
        * @returns Entry object or null if there were no matches
        */
       public static findEntryById(id: number, db: Database):Entry|null {
-        var d = db.query("entries[id="+id+"]");
-        if (d != null) return Entry.Helper.getEntryObjectFromDatabaseRow(d, db);
+        let data:any = db.query("entries[id="+id+"]");
+        if (data != null) return Entry.Helper.getEntryObjectFromDatabaseRow(data, db);
         else return null;
       }
 
@@ -167,16 +167,15 @@ export namespace Accounting {
        * @returns Ledger array or null if there were no matches
        */
       public static getAllEntries(db: Database):Entry[] {
-        var data = db.query("entries");
+        let data:any = db.query("entries");
+        let entries:Entry[] = [];
         if(data != []) {
-          var entries:Entry[] = [];
           data.map((d:any) => {
             let entry:Entry|null = Entry.Helper.getEntryObjectFromDatabaseRow(d, db);
-            if (entry != null) data.this.push(entry);
+            if (entry != null) entries.push(entry);
           });
-          return entries;
         }
-        else return [];
+        return entries;
       }
 
       /**
@@ -190,8 +189,9 @@ export namespace Accounting {
         let debit:Ledger|null = Ledger.Helper.findLedgerById(data.debit, db);
         let credit:Ledger|null = Ledger.Helper.findLedgerById(data.credit, db);
         
-        if (debit != null && credit != null) 
+        if (debit != null && credit != null) {
           return new Entry(data.id, debit, credit, data.amount, data.time, data.narration);
+        }
         else return null;
       }
     };
@@ -263,10 +263,10 @@ export namespace Accounting {
        */
       public save(db: Database):Ledger {
 
-        var time:number = new Date().getTime();
+        let time:number = new Date().getTime();
 
         if(Ledger.Helper.findLedgerByName(this.name, db) == null) {
-          var id = db.data.ledgers.length+1;
+          let id = db.data.ledgers.length+1;
           db.data.ledgers.push({
             id: id,
             name: this.name,
@@ -292,8 +292,8 @@ export namespace Accounting {
        * @returns Ledger object or null if there were no matches
        */
       public static findLedgerById(id: number, db: Database):Ledger|null {
-        var d = db.query("ledgers[id="+id+"]");
-        if (d != null) return Ledger.Helper.getLedgerObjectFromDatabaseRow(d);
+        let data:any = db.query("ledgers[id="+id+"]");
+        if (data != null) return Ledger.Helper.getLedgerObjectFromDatabaseRow(data);
         else return null;
       }
 
@@ -305,8 +305,8 @@ export namespace Accounting {
        * @returns Ledger object or null if there were no matches
        */
       public static findLedgerByName(name: string, db: Database):Ledger|null {
-        var d = db.query("ledgers[name="+name+"]");
-        if (d != null) return Ledger.Helper.getLedgerObjectFromDatabaseRow(d);
+        let data:any = db.query("ledgers[name="+name+"]");
+        if (data != null) return Ledger.Helper.getLedgerObjectFromDatabaseRow(data);
         else return null;
       }
 
@@ -318,13 +318,12 @@ export namespace Accounting {
        * @returns Ledger array or null if there were no matches
        */
       public static findLedgersByType(type: string, db: Database):Ledger[] {
-        var data = db.query("ledgers[*type="+type+"]");
+        let data:any= db.query("ledgers[*type="+type+"]");
+        let ledgers:Ledger[] = [];
         if(data != []) {
-          var ledgers:Ledger[] = [];
           data.map((d:any) => { ledgers.push(Ledger.Helper.getLedgerObjectFromDatabaseRow(d)); });
-          return ledgers;
         }
-        else return [];
+        return ledgers;
       }
 
       /**
@@ -334,16 +333,12 @@ export namespace Accounting {
        * @returns Ledger array or null if there were no matches
        */
       public static getAllLedgers(db: Database):Ledger[] {
-        var data = db.query("ledgers");
+        let data:any= db.query("ledgers");
+        let ledgers:Ledger[] = [];
         if(data != []) {
-          var ledgers:Ledger[] = [];
-
-          data.map((d:any) => {
-            ledgers.push(Ledger.Helper.getLedgerObjectFromDatabaseRow(d));
-          })
-          return ledgers;
+          data.map((d:any) => { ledgers.push(Ledger.Helper.getLedgerObjectFromDatabaseRow(d)); })
         }
-        else return [];
+        return ledgers;
       }
 
       /**
