@@ -3,22 +3,29 @@ import * as fs from "fs";
 
 export class Database {
 
-  private file_name:string;
+  private fileName:string;
   public data:any;
 
-  public constructor(file_name:string) {
-    this.file_name = file_name;
-    var d = JSON.parse(fs.readFileSync(this.file_name).toString());
+  public constructor(fileName:string) {
+    this.fileName = fileName;
+    const d = JSON.parse(fs.readFileSync(this.fileName).toString());
     this.data = d;
   }
 
-  public query(query_text:string):any {
-    return jsonQuery(query_text, {
+  public query(queryText:string):any {
+    return jsonQuery(queryText, {
       data: this.data
     }).value;
   }
 
   public save():void {
-    fs.writeFileSync(this.file_name, JSON.stringify(this.data, null, 2));
+    fs.writeFileSync(this.fileName, JSON.stringify(this.data));
+  }
+
+  public reset():void {
+    fs.writeFileSync(this.fileName, JSON.stringify({
+      "entries": [],
+      "ledgers": []
+    }))
   }
 }

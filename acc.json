@@ -75,6 +75,12 @@
       "name": "furniture",
       "type": "a",
       "time": 1587581039152
+    },
+    {
+      "id": 8,
+      "name": "bank",
+      "type": "a",
+      "time": 1591300370361
     }
   ]
 }
