@@ -2,8 +2,14 @@ import {Database} from "./Database";
 import {Ledger} from "./Ledger";
 import {Entry} from "./Entry";
 
-/** @class Accounting class */
-export class Accounting {
+/**
+ * @class Accountant class
+ * 
+ * This is used for features that are not solely dependent
+ * on journal or ledger (i.e. most of the features)
+ */
+
+export class Accountant {
 
   /**
    * find entries of a ledger
@@ -43,5 +49,10 @@ export class Accounting {
       return res;
     }
   }
+
+  /**
+   * get balance of a ledger on a particular date
+   */
+  public static getLedgerBalance():number {return 0;}
 
 }

@@ -3,12 +3,12 @@ const {assert, expect} = require('chai');
 const Database = require("../dist/Database").Database;
 const Ledger = require("../dist/Ledger").Ledger;
 const Entry = require("../dist/Entry").Entry;
-const Accounting = require("../dist/Accounting").Accounting;
+const Accountant = require("../dist/Accountant").Accountant;
 
 const FILENAME = "./test/sample_data.json";
 var db = new Database(FILENAME);
 
-describe("Accounting Testing", () => {
+describe("Accountant Testing", () => {
 
   before(() => {
     let cash = new Ledger.Builder("cash", Ledger.Type.ASSET).save(db);
@@ -22,9 +22,9 @@ describe("Accounting Testing", () => {
     let z = new Entry.Builder("purchase", "cash", 100, "being good purchased for cash").save(db);
   });
 
-  describe("Get Entries By Ledger Accounting.getEntriesByLedger()", () => {
+  describe("Get Entries By Ledger Accountant.getEntriesByLedger()", () => {
     it("Get entries normally", ()=> {
-      let x = Accounting.getEntriesByLedger(Ledger.Helper.findLedgerById(3, db), db);
+      let x = Accountant.getEntriesByLedger(Ledger.Helper.findLedgerById(3, db), db);
   
       assert.equal(x[0].id, 2, "Correct Id");
       assert.equal(x[0].debit.name, "purchase", "Correct Debit");
@@ -35,15 +35,15 @@ describe("Accounting Testing", () => {
     });
 
     it("Check ledger with no entry", ()=> {
-      let x = Accounting.getEntriesByLedger(Ledger.Helper.findLedgerByName("bank", db), db);
+      let x = Accountant.getEntriesByLedger(Ledger.Helper.findLedgerByName("bank", db), db);
       assert.equal(x.length, 0, "Correct Array Size");
     });
   });
 
-  describe("Entry Period Filter Accounting.entryPeriodFilter", () => {
+  describe("Entry Period Filter Accountant.entryPeriodFilter", () => {
 
     it("Period works normally", () => {
-      let x = Accounting.entryPeriodFilter(Accounting.getEntriesByLedger(Ledger.Helper.findLedgerByName("purchase", db), db), 0, new Date().getTime());
+      let x = Accountant.entryPeriodFilter(Accountant.getEntriesByLedger(Ledger.Helper.findLedgerByName("purchase", db), db), 0, new Date().getTime());
       
       assert.equal(x.length, 2, "Correct Array Size")
 
@@ -56,16 +56,16 @@ describe("Accounting Testing", () => {
 
     it("Invoke Exception 'Invalid Time Parameter' same from and to time", () => {
       expect(() => {
-        Accounting.entryPeriodFilter(
-          Accounting.getEntriesByLedger(Ledger.Helper.findLedgerById(3, db), db)
+        Accountant.entryPeriodFilter(
+          Accountant.getEntriesByLedger(Ledger.Helper.findLedgerById(3, db), db)
           , 0, 0);
       }).to.throw("'toDate' should be bigger than 'fromDate'");
     });
 
     it("Invoke Exception 'Invalid Time Parameter' from time is less than to time", () => {
       expect(() => {
-        Accounting.entryPeriodFilter(
-          Accounting.getEntriesByLedger(Ledger.Helper.findLedgerById(3, db), db)
+        Accountant.entryPeriodFilter(
+          Accountant.getEntriesByLedger(Ledger.Helper.findLedgerById(3, db), db)
           , 100, 0);
       }).to.throw("'toDate' should be bigger than 'fromDate'");
     });
