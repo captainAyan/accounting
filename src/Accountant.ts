@@ -32,7 +32,8 @@ export class Accountant {
   }
 
   /**
-   * filters entry arrays by 'start date'(fromDate) and 'end date'(toData)
+   * filters entry arrays by 'start date'(fromDate) and 'end date'(toData).
+   * use the result of Accountant.getEntriesByLedger method.
    * 
    * @param {Entry[]} entries   array of entries
    * @param {number}  fromDate from date
@@ -51,8 +52,27 @@ export class Accountant {
   }
 
   /**
-   * get balance of a ledger on a particular date
+   * get balance of a ledger on a particular date. returns 
+   * positive balance if the debit side balance is on the 
+   * same side as the ledger type (i.e. asset & expense is
+   * debit type and liability & income is credit type)
+   * 
+   * @param {Ledger}   ledger ledger object of the ledger
+   * @param {number}   date   the particular date of the balance
+   * @param {Database} db     the database instance
+   * @returns ledger balance
    */
-  public static getLedgerBalance():number {return 0;}
+  public static getLedgerBalance(ledger:Ledger, date:number, db:Database):number {
+    const data:Entry[] = Accountant.entryPeriodFilter(Accountant.getEntriesByLedger(ledger, db), 0, date);
+    let balance:number = 0;
+
+    data.map(x => {
+      if(x.debit.id == ledger.id) balance += x.amount;
+      else balance -= x.amount;
+    });
+
+    if (ledger.type==Ledger.Type.ASSET||ledger.type==Ledger.Type.EXPENDITURE) return balance;
+    else return -balance;
+  }
 
 }

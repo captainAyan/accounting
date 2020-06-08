@@ -17,9 +17,15 @@ describe("Accountant Testing", () => {
     let sale = new Ledger.Builder("sale", Ledger.Type.INCOME).save(db);
     let bank = new Ledger.Builder("bank", Ledger.Type.ASSET).save(db);
 
-    let x = new Entry.Builder("cash", "sale", 100, "being good sold for cash").save(db);
-    let y = new Entry.Builder("purchase", "loan", 100, "being good purchased for credit").save(db);
-    let z = new Entry.Builder("purchase", "cash", 100, "being good purchased for cash").save(db);
+    let x = new Entry.Builder(
+      Ledger.Helper.findLedgerByName("cash", db), 
+      Ledger.Helper.findLedgerByName("sale", db), 100, "being good sold for cash").save(db);
+    let y = new Entry.Builder(
+      Ledger.Helper.findLedgerByName("purchase", db), 
+      Ledger.Helper.findLedgerByName("loan", db), 100, "being good purchased for credit").save(db);
+    let z = new Entry.Builder(
+      Ledger.Helper.findLedgerByName("purchase", db), 
+      Ledger.Helper.findLedgerByName("cash", db), 100, "being good purchased for cash").save(db);
   });
 
   describe("Get Entries By Ledger Accountant.getEntriesByLedger()", () => {

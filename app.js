@@ -12,7 +12,8 @@ try {
   var d2 = Accountant.getEntriesByLedger(Ledger.Helper.findLedgerByName("cash", db), db);
   var d3 = Accountant.entryPeriodFilter(d2, new Date().getTime(), new Date().getTime()+2000);
   var d4 = Entry.Helper.getAllEntries(db);
+  var d5 = Accountant.getLedgerBalance(Ledger.Helper.findLedgerByName("furniture", db), new Date().getTime(), db);
 
-  console.log(d4);
+  console.log(d5);
 }
 catch(e) {console.log(e);}

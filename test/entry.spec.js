@@ -15,15 +15,21 @@ describe("Entry Testing", () => {
     let purchase = new Ledger.Builder("purchase", Ledger.Type.EXPENDITURE).save(db);
     let sale = new Ledger.Builder("sale", Ledger.Type.INCOME).save(db);
 
-    let x = new Entry.Builder("cash", "sale", 100, "being good sold for cash").save(db);
-    let y = new Entry.Builder("purchase", "loan", 100, "being good purchased for credit").save(db);
+    let x = new Entry.Builder(
+      Ledger.Helper.findLedgerByName("cash", db), 
+      Ledger.Helper.findLedgerByName("sale", db), 100, "being good sold for cash").save(db);
+    let y = new Entry.Builder(
+      Ledger.Helper.findLedgerByName("purchase", db), 
+      Ledger.Helper.findLedgerByName("loan", db), 100, "being good purchased for credit").save(db);
   });
 
   describe("Testing Entry Builder", () => {
 
     it("Creating the cash Ledger using Entry.Builder", ()=> {
 
-      let x = new Entry.Builder("purchase", "cash", 100, "being good purchased for cash").save(db);
+      let x = new Entry.Builder(
+        Ledger.Helper.findLedgerByName("purchase", db), 
+        Ledger.Helper.findLedgerByName("cash", db), 100, "being good purchased for cash").save(db);
 
       assert.equal(x.id, 3, "Correct ID");
       assert.equal(x.debit.name, "purchase", "Correct Debit");
@@ -33,10 +39,53 @@ describe("Entry Testing", () => {
 
     });
 
-    it("Invoking Exception 'Ledger does not exist'", () => {
+    it("Invoking Exception 'Ledger Cannot Be Null'", () => {
       expect(() => {
-        let x = new Entry.Builder("purchase", "wrong", 100, "being good purchased for cash").save(db);
-      }).to.throw("Ledger does not exist");
+        let x = new Entry.Builder(null, null, 100, "some narration").save(db)
+      }).to.throw("Ledger cannot be null");
+    });
+
+    it("Invoking Exception 'Ledger Cannot Be Null' with debit null", () => {
+      expect(() => {
+        let x = new Entry.Builder(
+          null, new Ledger.Helper.findLedgerByName("purchase", db), 
+          100, "some narration").save(db)
+      }).to.throw("Ledger cannot be null");
+    });
+
+    it("Invoking Exception 'Ledger Cannot Be Null' with credit null", () => {
+      expect(() => {
+        let x = new Entry.Builder(
+          new Ledger.Helper.findLedgerByName("purchase", db),
+          null, 100, "some narration").save(db);
+      }).to.throw("Ledger cannot be null");
+    });
+
+    it("Invoking Exception 'Invalid Amount' with negative number", () => {
+      expect(() => {
+        let x = new Entry.Builder(
+          new Ledger.Helper.findLedgerByName("purchase", db), 
+          new Ledger.Helper.findLedgerByName("cash", db), -100, "some narration")
+          .save(db);
+      }).to.throw("Invalid amount");
+    });
+
+    it("Invoking Exception 'Invalid Amount' with zero", () => {
+      expect(() => {
+        let x = new Entry.Builder(
+          new Ledger.Helper.findLedgerByName("purchase", db), 
+          new Ledger.Helper.findLedgerByName("cash", db), 0, "some narration")
+          .save(db);
+      }).to.throw("Invalid amount");
+    });
+  
+    it("Invoking Exception 'Invalid Narration'", () => {
+      expect(() => {
+        let x = new Entry.Builder(
+          new Ledger.Helper.findLedgerByName("purchase", db), 
+          new Ledger.Helper.findLedgerByName("cash", db), 100, "")
+          .save(db);
+      }).to.throw("Invalid narration");
     });
 
   });

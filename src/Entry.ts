@@ -41,24 +41,32 @@ export class Entry {
   /** @class Entry Builder is used for building new journal entry */
   public static Builder = class {
 
-    public debit: string;
-    public credit: string;
+    public debit: Ledger;
+    public credit: Ledger;
     public amount: number;
     public narration: string;
 
     /**
      * @constructor Journal entry builder constructor
      *
-     * @param {string} dr        name of debit ledger
-     * @param {string} cr        name of credit ledger
+     * @param {Ledger} dr        debit ledger object
+     * @param {Ledger} cr        credit ledger object
      * @param {number} amount    amount of entry
      * @param {string} narration entry remarks or narration
+     * @throws throws error if ledger null or narration is empty or 
+     * amount is invalid 
      */
-    public constructor(dr:string, cr:string, amount:number, narration:string) {
-      this.debit = dr;
-      this.credit = cr;
-      this.amount = amount;
-      this.narration = narration;
+    public constructor(dr:Ledger, cr:Ledger, amount:number, narration:string) {
+      if(dr && cr) {
+        this.debit = dr; 
+        this.credit = cr; 
+      } else throw new Error("Ledger cannot be null");
+
+      if(amount>0) this.amount = amount;
+      else throw new Error("Invalid amount");
+
+      if(narration.length>0) this.narration = narration;
+      else throw new Error("Invalid narration");
     }
 
     /**
@@ -69,30 +77,22 @@ export class Entry {
      * @throws throws error if ledgers are not found
      */
     public save(db: Database):Entry {
-
       let time:number = new Date().getTime();
+      let id:number = db.data.entries.length+1;
 
-      let debit:Ledger|null = Ledger.Helper.findLedgerByName(this.debit, db);
-      let credit:Ledger|null = Ledger.Helper.findLedgerByName(this.credit, db);
+      let object = {
+        id: id,
+        debit: this.debit.id,
+        credit: this.credit.id,
+        amount: this.amount,
+        time: time,
+        narration: this.narration
+      };
 
-      if(debit!== null && credit !== null ) {
-        let id:number = db.data.entries.length+1;
+      db.data.entries.push(object);
+      db.save();
 
-        let object = {
-          id: id,
-          debit: debit.id,
-          credit: credit.id,
-          amount: this.amount,
-          time: time,
-          narration: this.narration
-        };
-
-        db.data.entries.push(object);
-        db.save();
-
-        return new Entry(id, debit, credit, this.amount, time, this.narration);
-      }
-      else throw new Error("Ledger does not exist")
+      return new Entry(id, this.debit, this.credit, this.amount, time, this.narration);
     }
   };
 
