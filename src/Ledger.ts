@@ -31,10 +31,9 @@ export class Ledger {
 
   /** @class Use these types where ledger type is required */
   public static Type = class {
-    static readonly INCOME:string = "i";
-    static readonly EXPENDITURE:string = "e";
-    static readonly ASSET:string = "a";
-    static readonly LIABILITY:string = "l";
+    static readonly PERSONAL:string = "p";
+    static readonly NOMINAL:string = "n";
+    static readonly REAL:string = "r";
   }
 
 
@@ -55,7 +54,10 @@ export class Ledger {
       if(name.length>0) this.name = name;
       else throw new Error("Invalid ledger name");
 
-      if(type === "i" || type === "e" || type === "a" || type === "l") this.type = type;
+      if(
+        type === Ledger.Type.PERSONAL
+        || type === Ledger.Type.NOMINAL
+        || type === Ledger.Type.REAL) this.type = type;
       else throw new Error("Invalid ledger type");
     }
 
@@ -123,7 +125,10 @@ export class Ledger {
      * @returns Ledger array or null if there were no matches
      */
     public static findLedgersByType(type: string, db: Database):Ledger[] {
-      if(!(type === "i" || type === "e" || type === "a" || type === "l")) throw new Error("Invalid ledger type");
+      if(!(type === Ledger.Type.PERSONAL 
+        || type === Ledger.Type.NOMINAL 
+        || type === Ledger.Type.REAL)) throw new Error("Invalid ledger type");
+      
       let data:any= db.query("ledgers[*type="+type+"]");
       let ledgers:Ledger[] = [];
       if(data !== []) {
@@ -145,7 +150,7 @@ export class Ledger {
         data.map((d:any) => { ledgers.push(Ledger.Helper.getLedgerObjectFromDatabaseRow(d)); })
       }
       return ledgers;
-    }
+    } 
 
     /**
      * Get ledger object from database row (tuple or record)

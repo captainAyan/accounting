@@ -9,19 +9,19 @@ var db = new Database(FILENAME);
 describe("Ledger Testing", () => {
 
   before(() => {
-    let loan = new Ledger.Builder("loan", Ledger.Type.LIABILITY).save(db);
-    let purchase = new Ledger.Builder("purchase", Ledger.Type.EXPENDITURE).save(db);
-    let sale = new Ledger.Builder("sale", Ledger.Type.INCOME).save(db);
+    let loan = new Ledger.Builder("loan", Ledger.Type.REAL).save(db);
+    let purchase = new Ledger.Builder("purchase", Ledger.Type.NOMINAL).save(db);
+    let sale = new Ledger.Builder("sale", Ledger.Type.NOMINAL).save(db);
   });
 
   describe("Testing Ledger Builder", () => {
 
     it("Creating the cash Ledger using Ledger.Builder", ()=> {
-      let cash = new Ledger.Builder("cash", Ledger.Type.ASSET).save(db);
+      let cash = new Ledger.Builder("cash", Ledger.Type.REAL).save(db);
 
       assert.equal(cash.id, 4, "Correct ID");
       assert.equal(cash.name, "cash", "Correct Name");
-      assert.equal(cash.type, Ledger.Type.ASSET, "Correct Type");
+      assert.equal(cash.type, Ledger.Type.REAL, "Correct Type");
     });
   
     it("Invoking Exception 'Invalid Type Exception'", () => {
@@ -32,13 +32,13 @@ describe("Ledger Testing", () => {
 
     it("Invoking Exception 'Invalid Name Exception'", () => {
       expect(() => {
-        let x = new Ledger.Builder("", Ledger.Type.ASSET).save(db);
+        let x = new Ledger.Builder("", Ledger.Type.REAL).save(db);
       }).to.throw("Invalid ledger name");
     });
   
     it("Invoking Exception 'Ledger Already Exists'", () => {
       expect(() => {
-        let x = new Ledger.Builder("cash", Ledger.Type.ASSET).save(db);
+        let x = new Ledger.Builder("cash", Ledger.Type.REAL).save(db);
       }).to.throw("Ledger already exists");
     });
 
@@ -51,21 +51,21 @@ describe("Ledger Testing", () => {
       let x = Ledger.Helper.findLedgerById(1, db);
       assert.equal(x.id, 1, "Correct ID");
       assert.equal(x.name, "loan", "Correct Name");
-      assert.equal(x.type, Ledger.Type.LIABILITY, "Correct Type");
+      assert.equal(x.type, Ledger.Type.REAL, "Correct Type");
     });
 
     it("Get ledger object using ledger name Ledger.Helper.findLedgerByName()", ()=> {
       let x = Ledger.Helper.findLedgerByName("loan", db);
       assert.equal(x.id, 1, "Correct ID");
       assert.equal(x.name, "loan", "Correct Name");
-      assert.equal(x.type, Ledger.Type.LIABILITY, "Correct Type");
+      assert.equal(x.type, Ledger.Type.REAL, "Correct Type");
     });
 
     it("Get ledgers array using ledger type Ledger.Helper.findLedgersByType()", ()=> {
-      let x = Ledger.Helper.findLedgersByType(Ledger.Type.LIABILITY, db);
+      let x = Ledger.Helper.findLedgersByType(Ledger.Type.REAL, db);
       assert.equal(x[0].id, 1, "Correct ID");
       assert.equal(x[0].name, "loan", "Correct Name");
-      assert.equal(x[0].type, Ledger.Type.LIABILITY, "Correct Type");
+      assert.equal(x[0].type, Ledger.Type.REAL, "Correct Type");
     });
 
     it("Get all ledgers array Ledger.Helper.getAllLedgers()", ()=> {
@@ -74,7 +74,7 @@ describe("Ledger Testing", () => {
       assert.equal(x.length, 4, "Correct Array Size");
       assert.equal(x[0].id, 1, "Correct ID");
       assert.equal(x[0].name, "loan", "Correct Name");
-      assert.equal(x[0].type, Ledger.Type.LIABILITY, "Correct Type");
+      assert.equal(x[0].type, Ledger.Type.REAL, "Correct Type");
     });
 
     it("Null return invalid id Ledger.Helper.findLedgerById()", ()=> {

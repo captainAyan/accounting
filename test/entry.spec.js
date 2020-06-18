@@ -10,10 +10,10 @@ var db = new Database(FILENAME);
 describe("Entry Testing", () => {
 
   before(() => {
-    let cash = new Ledger.Builder("cash", Ledger.Type.ASSET).save(db);
-    let loan = new Ledger.Builder("loan", Ledger.Type.LIABILITY).save(db);
-    let purchase = new Ledger.Builder("purchase", Ledger.Type.EXPENDITURE).save(db);
-    let sale = new Ledger.Builder("sale", Ledger.Type.INCOME).save(db);
+    let cash = new Ledger.Builder("cash", Ledger.Type.REAL).save(db);
+    let loan = new Ledger.Builder("loan", Ledger.Type.REAL).save(db);
+    let purchase = new Ledger.Builder("purchase", Ledger.Type.NOMINAL).save(db);
+    let sale = new Ledger.Builder("sale", Ledger.Type.NOMINAL).save(db);
 
     let x = new Entry.Builder(
       Ledger.Helper.findLedgerByName("cash", db), 

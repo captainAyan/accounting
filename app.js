@@ -8,7 +8,7 @@ const FILENAME = "./acc.json";
 var db = new Database(FILENAME);
 
 try {
-  var d1 = Ledger.Helper.findLedgersByType(Ledger.Type.LIABILITY, db);
+  var d1 = Ledger.Helper.findLedgersByType(Ledger.Type.REAL, db);
   var d2 = Accountant.getEntriesByLedger(Ledger.Helper.findLedgerByName("cash", db), db);
   var d3 = Accountant.entryPeriodFilter(d2, new Date().getTime(), new Date().getTime()+2000);
   var d4 = Entry.Helper.getAllEntries(db);

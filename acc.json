@@ -37,49 +37,49 @@
     {
       "id": 1,
       "name": "capital",
-      "type": "l",
+      "type": "r",
       "time": 1587245564633
     },
     {
       "id": 2,
       "name": "purchases",
-      "type": "e",
+      "type": "n",
       "time": 1587245564636
     },
     {
       "id": 3,
       "name": "cash",
-      "type": "a",
+      "type": "r",
       "time": 1587245564636
     },
     {
       "id": 4,
       "name": "sales",
-      "type": "i",
+      "type": "n",
       "time": 1587245564637
     },
     {
       "id": 5,
       "name": "debtor",
-      "type": "a",
+      "type": "r",
       "time": 1587277528074
     },
     {
       "id": 6,
       "name": "machinery",
-      "type": "a",
+      "type": "r",
       "time": 1587460868112
     },
     {
       "id": 7,
       "name": "furniture",
-      "type": "a",
+      "type": "r",
       "time": 1587581039152
     },
     {
       "id": 8,
       "name": "bank",
-      "type": "a",
+      "type": "r",
       "time": 1591300370361
     }
   ]

@@ -53,14 +53,13 @@ export class Accountant {
 
   /**
    * get balance of a ledger on a particular date. returns 
-   * positive balance if the debit side balance is on the 
-   * same side as the ledger type (i.e. asset & expense is
-   * debit type and liability & income is credit type)
+   * positive balance if debit side is high, and negative 
+   * balance if credit side is high.
    * 
    * @param {Ledger}   ledger ledger object of the ledger
    * @param {number}   date   the particular date of the balance
    * @param {Database} db     the database instance
-   * @returns ledger balance
+   * @returns ledger balance (if Dr > Cr then positive) (if Dr < Cr then negative)
    */
   public static getLedgerBalance(ledger:Ledger, date:number, db:Database):number {
     const data:Entry[] = Accountant.entryPeriodFilter(Accountant.getEntriesByLedger(ledger, db), 0, date);
@@ -71,8 +70,7 @@ export class Accountant {
       else balance -= x.amount;
     });
 
-    if (ledger.type==Ledger.Type.ASSET||ledger.type==Ledger.Type.EXPENDITURE) return balance;
-    else return -balance;
+    return balance;
   }
 
 }
