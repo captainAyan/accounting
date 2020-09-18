@@ -1,8 +1,8 @@
 const {assert, expect} = require('chai');
 
-const Database = require("../dist/Database").Database;
-const Ledger = require("../dist/Ledger").Ledger;
-const Entry = require("../dist/Entry").Entry;
+const Database = require("../../dist/database/Database").Database;
+const Ledger = require("../../dist/core/Ledger").Ledger;
+const Entry = require("../../dist/core/Entry").Entry;
 
 const FILENAME = "./test/sample_data.json";
 var db = new Database(FILENAME);
@@ -121,6 +121,9 @@ describe("Entry Testing", () => {
 
   });
 
-  after(() => db.reset());
+  after(() => {
+    db.reset();
+    db.save();
+  });
 
 });

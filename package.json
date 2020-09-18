@@ -4,8 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js",
-    "test": "mocha || true",
+    "start": "node example.js",
+    "test": "mocha --recursive || true",
     "compile": "tsc --declaration"
   },
   "directories": {
@@ -13,7 +13,10 @@
     "src": "./src",
     "test": "./test"
   },
-  "pre-commit": [ "compile", "test" ],
+  "pre-commit": [
+    "compile",
+    "test"
+  ],
   "dependencies": {
     "json-query": "^2.2.2"
   },

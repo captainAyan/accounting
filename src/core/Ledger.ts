@@ -1,4 +1,4 @@
-import {Database} from "./Database";
+import {Database} from "../database/Database";
 
 /** @class Ledger representing a accounting ledger */
 export class Ledger {

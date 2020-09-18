@@ -1,5 +1,5 @@
 import {Ledger} from "./Ledger";
-import {Database} from "./Database";
+import {Database} from "../database/Database";
 
 /** @class Journal Entry model */
 export class Entry {

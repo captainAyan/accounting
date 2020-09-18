@@ -1,15 +1,15 @@
-import {Database} from "./Database";
+import {Database} from "../database/Database";
 import {Ledger} from "./Ledger";
 import {Entry} from "./Entry";
 
 /**
- * @class Accountant class
+ * @class Core class
  * 
  * This is used for features that are not solely dependent
  * on journal or ledger (i.e. most of the features)
  */
 
-export class Accountant {
+export class Core {
 
   /**
    * find entries of a ledger
@@ -33,7 +33,7 @@ export class Accountant {
 
   /**
    * filters entry arrays by 'start date'(fromDate) and 'end date'(toData).
-   * use the result of Accountant.getEntriesByLedger method.
+   * use the result of Core.getEntriesByLedger method.
    * 
    * @param {Entry[]} entries   array of entries
    * @param {number}  fromDate from date
@@ -62,7 +62,7 @@ export class Accountant {
    * @returns ledger balance (if Dr > Cr then positive) (if Dr < Cr then negative)
    */
   public static getLedgerBalance(ledger:Ledger, date:number, db:Database):number {
-    const data:Entry[] = Accountant.entryPeriodFilter(Accountant.getEntriesByLedger(ledger, db), 0, date);
+    const data:Entry[] = Core.entryPeriodFilter(Core.getEntriesByLedger(ledger, db), 0, date);
     let balance:number = 0;
 
     data.map(x => {
